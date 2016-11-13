@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Prompter {
-    private Map<Integer, String> menu;
-    private BufferedReader reader;
+    private Map<Integer, String> menu; // menu : menu holds Action Items to display on User Interface
+    private BufferedReader reader;    // reader : Standard Input Reader from User Interface
 
     public Prompter() {
         menu = new HashMap<Integer, String>();
@@ -16,6 +16,9 @@ public class Prompter {
         fillMenu();
     }
 
+    /**
+     * fill Menu : Fills Menu Items to menu to display on User Interface
+     */
     private void fillMenu() {
         menu.put(1,"World Countries");
         menu.put(2,"Adult literacy rate");
@@ -26,6 +29,11 @@ public class Prompter {
         menu.put(7,"Delete");
         menu.put(8,"Quit");
     }
+
+    /**
+     * @return choice : Returns user Choice from Available menu
+     * @throws IOException
+     */
 
     private int promptForAction() throws IOException {
 
@@ -38,6 +46,12 @@ public class Prompter {
         int choice = Integer.parseInt(reader.readLine().trim());
         return choice;
     }
+
+    /**
+     * run    : Application Runnable Method
+     * Runs the Application unitl user exists from Application
+     * Input  : Obtains the User Input
+     */
 
     public void run() {
 
