@@ -24,6 +24,11 @@ public class CountryDaoImpl implements CountryDao {
     }
 
     @Override
+    public void closeSessionFactory() {
+        sessionFactory.close();
+    }
+
+    @Override
     public List<Country> listAllCountry() {
 
         // Open Session

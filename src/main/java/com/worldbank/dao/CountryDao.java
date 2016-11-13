@@ -11,4 +11,5 @@ public interface CountryDao {
     void addCountry(Country country);
     void deleteCountry(Country country);
     void editCountry(Country country);
+    void closeSessionFactory();
 }
