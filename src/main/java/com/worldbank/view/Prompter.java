@@ -1,5 +1,7 @@
 package com.worldbank.view;
 
+import com.worldbank.controller.WorldCountries;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,10 +11,12 @@ import java.util.Map;
 public class Prompter {
     private Map<Integer, String> menu; // menu : menu holds Action Items to display on User Interface
     private BufferedReader reader;    // reader : Standard Input Reader from User Interface
+    private WorldCountries worldCountries;
 
     public Prompter() {
         menu = new HashMap<Integer, String>();
         reader = new BufferedReader(new InputStreamReader(System.in));
+        worldCountries = new WorldCountries();
         fillMenu();
     }
 
@@ -61,7 +65,7 @@ public class Prompter {
             try {
                 switch (choice = promptForAction()) {
                     case 1:
-                        System.out.println("option 1\n");
+                        worldCountries.listAllCountries();
                         break;
                     case 2:
                         System.out.println("option 2\n");

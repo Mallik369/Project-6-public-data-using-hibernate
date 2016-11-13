@@ -20,6 +20,43 @@ public class Country {
         this.adultLiteracyRate = builder.adultLiteracyRate;
     }
 
+    @Override
+    public String toString() {
+        String nullInternetUser;
+        String nullLiteracy;
+        String formattedOutput;
+
+        // internetUsers and adultLiteracy Rate both are null
+        // display format : ASM    American Samoa       --                   --
+        if(internetUsers == null && adultLiteracyRate == null) {
+            nullInternetUser = "--";
+            nullLiteracy = "--";
+            formattedOutput = String.format("%-6s %-40s %9s %20s",
+                    code,name,nullInternetUser,nullLiteracy);
+        }
+        // internetUsers is null and adultLiteracyRate is not null
+        // display format :  ARM    Armenia         41.90                  --
+        else if(internetUsers == null && adultLiteracyRate != null) {
+            nullInternetUser = "--";
+            formattedOutput = String.format("%-6s %-40s %9s %20.2f",
+                    code,name,nullInternetUser,adultLiteracyRate);
+        }
+        // internet User is not null and adultLiteracy is null
+        // display format : AFG    Afghanistan       5.90                  --
+        else if(adultLiteracyRate == null && internetUsers != null) {
+            nullLiteracy = "--";
+            formattedOutput = String.format("%-6s %-40s %10.2f %19s",
+                    code,name,internetUsers,nullLiteracy);
+        }
+        // internet User and adultLiteracy both are not null
+        // dispaly format : AGO    Angola         19.10                70.78
+        else {
+            formattedOutput = String.format("%-6s %-40s %10.2f %20.2f",
+                    code,name,internetUsers,adultLiteracyRate);
+        }
+        return formattedOutput;
+    }
+
     public String getCode() {return code;}
 
     public void setCode(String code) {this.code = code;}
