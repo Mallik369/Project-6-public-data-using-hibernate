@@ -1,6 +1,8 @@
 package com.worldbank.view;
 
 import com.worldbank.controller.WorldCountries;
+import com.worldbank.dao.CountryDao;
+import com.worldbank.dao.CountryDaoImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ public class Prompter {
     private Map<Integer, String> menu; // menu : menu holds Action Items to display on User Interface
     private BufferedReader reader;    // reader : Standard Input Reader from User Interface
     private WorldCountries worldCountries;
+    private static final CountryDao dao = new CountryDaoImpl();
 
     public Prompter() {
         menu = new HashMap<Integer, String>();
@@ -86,6 +89,7 @@ public class Prompter {
                         break;
                     case 8:
                         System.out.println("Exiting Application\n");
+                        dao.closeSessionFactory();
                         break;
                     default:
                         System.out.println("Please enter a valid choice.\n");
