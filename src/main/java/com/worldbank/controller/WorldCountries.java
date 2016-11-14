@@ -5,6 +5,7 @@ import com.worldbank.dao.CountryDaoImpl;
 import com.worldbank.model.Country;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,5 +97,46 @@ public class WorldCountries {
         double coCoefficient = corelationCoefficient.computeCorelationCoefficient(adultLiteracyRate,internetUsers);
         System.out.printf("Corelation Coefficient between AdultLiteracyRate and " +
                 "Internet User of Country : %.6f",coCoefficient);
+    }
+
+    public void editCountry() throws IOException {
+
+        Double internetUser;
+        Double literacyRate;
+        int choice = 0;
+        System.out.println("Enter the country Code:");
+        String code = reader.readLine();
+        Country country = countryDao.findCountryByCode(code);
+        if (country == null) {
+            System.out.println("Country does not exist , Enter a valid country code.");
+        } else {
+
+            do {
+                System.out.printf("Enter values to change for %s:%n", country.getName());
+                System.out.println("1) Internet Users");
+                System.out.println("2) Adult Literacy Rate");
+                System.out.println("3) Updated Data");
+                choice = Integer.parseInt(reader.readLine().trim());
+                switch (choice) {
+                    case 1:
+                        System.out.printf("Enter Number of Internet User for %s:%n", country.getName());
+                        internetUser = Double.valueOf(reader.readLine());
+                        country.setInternetUsers(internetUser);
+                        break;
+                    case 2:
+                        System.out.printf("Enter Adult Literacy Rate for %s:%n", country.getName());
+                        literacyRate = Double.valueOf(reader.readLine());
+                        country.setAdultLiteracyRate(literacyRate);
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        System.out.println("Please enter the valid choice in Avaialabe Menu");
+                }
+            } while (choice != 3);
+            countryDao.editCountry(country);
+            System.out.printf("%s Data is Updated !%n", country.getName());
+            worldCountries = countryDao.listAllCountry();
+        }
     }
 }
