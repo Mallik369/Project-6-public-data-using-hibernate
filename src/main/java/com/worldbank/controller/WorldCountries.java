@@ -4,15 +4,26 @@ import com.worldbank.dao.CountryDao;
 import com.worldbank.dao.CountryDaoImpl;
 import com.worldbank.model.Country;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorldCountries {
     private CountryDao countryDao;
     private List<Country> worldCountries;
+    private List<Double> adultLiteracyRate;
+    private List<Double> internetUsers;
+    private CorelationCoefficient corelationCoefficient;
+    private BufferedReader reader;
 
     public WorldCountries() {
         countryDao = new CountryDaoImpl();
         worldCountries = countryDao.listAllCountry();
+        adultLiteracyRate = new ArrayList<>();
+        internetUsers = new ArrayList<>();
+        corelationCoefficient = new CorelationCoefficient();
+        reader = new BufferedReader(new InputStreamReader(System.in));
 
     }
 
@@ -22,7 +33,7 @@ public class WorldCountries {
         String header2 = "Country Name";
         String header3 = "Internet Users";
         String header4 = "Literacy Rate";
-        String ruler = "------------------------------------------------------------------------------------------------";
+        String ruler = "-------------------------------------------------------------------------------------";
         System.out.format("%-6s %-40s %-20s %-20s %n%s%n",
                 header1, header2,
                 header3, header4, ruler);
@@ -30,6 +41,60 @@ public class WorldCountries {
 
     public void listAllCountries() {
         header();
-        worldCountries.stream().forEach(System.out::println);
+        worldCountries.forEach(System.out::println);
+
+    }
+
+    public void adultLiteracyRate() {
+        Country maxLiteracy;
+        Country minLiteracy;
+
+        maxLiteracy =    worldCountries
+                        .stream()
+                        .filter(country -> country.getAdultLiteracyRate() != null)
+                        .max((o1, o2) -> o1.getAdultLiteracyRate().compareTo(o2.getAdultLiteracyRate()))
+                        .get();
+        minLiteracy =   worldCountries
+                        .stream()
+                        .filter(country -> country.getAdultLiteracyRate() != null)
+                        .min((o1, o2) -> o1.getAdultLiteracyRate().compareTo(o2.getAdultLiteracyRate()))
+                        .get();
+
+        System.out.printf("Max Literacy Rate Country : %s%n",maxLiteracy.getName());
+        System.out.printf("Max Literacy Rate : %.2f%n",maxLiteracy.getAdultLiteracyRate());
+        System.out.printf("Min Literacy Rate Country : %s%n",minLiteracy.getName());
+        System.out.printf("Min Literacy Rate : %.2f%n",minLiteracy.getAdultLiteracyRate());
+    }
+
+    public void internetUsers() {
+        Country maxInternetUsers;
+        Country minInternetUsers;
+
+        maxInternetUsers  =  worldCountries
+                            .stream()
+                            .filter(country -> country.getInternetUsers() != null)
+                            .max((o1, o2) -> o1.getInternetUsers().compareTo(o2.getInternetUsers()))
+                            .get();
+
+        minInternetUsers =  worldCountries
+                            .stream()
+                            .filter(country -> country.getInternetUsers() != null)
+                            .min((o1, o2) -> o1.getInternetUsers().compareTo(o2.getInternetUsers()))
+                            .get();
+
+        System.out.printf("Max Internet Users Country : %s%n",maxInternetUsers.getName());
+        System.out.printf("Max Internet Users : %.2f%n",maxInternetUsers.getInternetUsers());
+        System.out.printf("Min Internet Users Country : %s%n",minInternetUsers.getName());
+        System.out.printf("Min Internet Users : %.2f%n",minInternetUsers.getInternetUsers());
+    }
+
+    public void corelationCoefficient() {
+        // Add all the Adult literate Rate and Internet Users in List
+        worldCountries.forEach(country -> adultLiteracyRate.add(country.getAdultLiteracyRate()));
+        worldCountries.forEach(country -> internetUsers.add(country.getInternetUsers()));
+        // Comput Coefficient Corelation
+        double coCoefficient = corelationCoefficient.computeCorelationCoefficient(adultLiteracyRate,internetUsers);
+        System.out.printf("Corelation Coefficient between AdultLiteracyRate and " +
+                "Internet User of Country : %.6f",coCoefficient);
     }
 }

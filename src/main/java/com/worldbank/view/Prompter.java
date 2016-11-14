@@ -40,7 +40,7 @@ public class Prompter {
      */
 
     private int promptForAction() throws IOException {
-
+        System.out.println();
         for (Map.Entry<Integer, String> option : menu.entrySet()) {
             System.out.printf("%d) %s %n",
                     option.getKey(),
@@ -50,7 +50,6 @@ public class Prompter {
         int choice = Integer.parseInt(reader.readLine().trim());
         return choice;
     }
-
     /**
      * run    : Application Runnable Method
      * Runs the Application unitl user exists from Application
@@ -60,7 +59,7 @@ public class Prompter {
     public void run() {
 
         int choice = 0;
-        System.out.println("\nWorld Countries Public Data Analysis of Internet User Rate and Adult Literacy Rate\n");
+        System.out.println("\nWorld Countries Public Data Analysis of Internet User Rate and Adult Literacy Rate");
         do {
             try {
                 switch (choice = promptForAction()) {
@@ -68,16 +67,16 @@ public class Prompter {
                         worldCountries.listAllCountries();
                         break;
                     case 2:
-                        System.out.println("option 2\n");
+                        worldCountries.adultLiteracyRate();
                         break;
                     case 3:
-                        System.out.println("option 3\n");
+                        worldCountries.internetUsers();
                         break;
                     case 4:
-                        System.out.println("option 4\n");
+                        worldCountries.corelationCoefficient();
                         break;
                     case 5:
-                        System.out.println("option 5\n");
+                        worldCountries.editCountry();
                         break;
                     case 6:
                         System.out.println("option 6\n");
@@ -99,6 +98,7 @@ public class Prompter {
         } while(!(choice == 8));
 
     }
+
 
 }
 
