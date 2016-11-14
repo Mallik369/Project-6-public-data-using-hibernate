@@ -210,4 +210,25 @@ public class WorldCountries {
             worldCountries = countryDao.listAllCountry();
         }
     }
+
+    public void deleteCountry() throws IOException {
+        System.out.println("Enter the Country Code:");
+        String code = reader.readLine().toUpperCase();
+        if(!(countryDao.findCountryByCode(code) == null)) {
+            Country country = countryDao.findCountryByCode(code);
+            System.out.printf("%s will loss all its information?%n",country.getName());
+            System.out.printf("press 'yes' to delete");
+            String confirm = reader.readLine().toLowerCase();
+            if(!confirm.equals("yes")) {
+                System.out.printf("%s is not deleted.%n",country.getName());
+            } else {
+                countryDao.deleteCountry(country);
+                System.out.printf("%s deleted from World Public Data %n",country.getName());
+                worldCountries = countryDao.listAllCountry();
+            }
+        } else {
+            System.out.printf("%s Country Code in not Existing in Public World Data.%n",code);
+        }
+
+    }
 }

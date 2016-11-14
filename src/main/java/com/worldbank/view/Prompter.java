@@ -82,7 +82,7 @@ public class Prompter {
                         worldCountries.addCountry();
                         break;
                     case 7:
-                        System.out.println("option 7\n");
+                        worldCountries.deleteCountry();
                         break;
                     case 8:
                         System.out.println("Exiting Application\n");
