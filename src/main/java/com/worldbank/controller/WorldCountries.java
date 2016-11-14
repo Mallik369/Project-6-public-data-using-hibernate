@@ -139,4 +139,75 @@ public class WorldCountries {
             worldCountries = countryDao.listAllCountry();
         }
     }
+
+    public void addCountry() throws IOException {
+
+        String name = "";
+        String code = "";
+        Double internetUser = null;
+        Double literacyRate = null;
+        String emptyinternetValue = "";
+        String emptyLiteracyRateValue = "";
+
+        System.out.println("Enter the Country Name:");
+        name = reader.readLine();
+        if(countryDao.findCountryByName(name) != null) {
+            System.out.printf("%s Data already Exists, Select to Edit option from Menu to Country data %n",name);
+        } else {
+            System.out.printf("Enter country code of %s:%n",name);
+            do {
+                code = reader.readLine().toUpperCase();
+                if (code.length() != 3) {
+                    System.out.println("Country can is constrained to 3 Characters, Enter 3 Letter Country Code");
+                }
+                if(countryDao.findCountryByName(code) != null) {
+                    System.out.printf("Country with %s as a country code is existing. " +
+                            "Enter Unique Country:%n",code);
+                }
+            } while (code.length() != 3 || countryDao.findCountryByCode(code) != null);
+            System.out.printf("Enter Number of Internet Users for %s%n",name);
+            System.out.println("Enter 'na' for empty value");
+            emptyinternetValue = reader.readLine().toLowerCase();
+            switch(emptyinternetValue) {
+                case "na":
+                    break;
+                default:
+                    internetUser = Double.valueOf(emptyinternetValue);
+                    break;
+            }
+            System.out.printf("Enter the literacy rate for %s%n",name);
+            System.out.println("Enter 'na' for empty value");
+            emptyLiteracyRateValue = reader.readLine().toLowerCase();
+            switch(emptyLiteracyRateValue) {
+                case "na":
+                    break;
+                default:
+                    literacyRate = Double.valueOf(emptyLiteracyRateValue);
+                    break;
+            }
+            if(literacyRate != null && internetUser != null) {
+                Country country = new Country.CountryBuilder(code,name)
+                        .withInternetUsers(internetUser)
+                        .withAdultLiteracyRate(literacyRate)
+                        .build();
+                countryDao.addCountry(country);
+            } else if(literacyRate == null && internetUser != null) {
+                Country country = new Country.CountryBuilder(code,name)
+                        .withInternetUsers(internetUser)
+                        .build();
+                countryDao.addCountry(country);
+            } else if(literacyRate != null) {
+                Country country = new Country.CountryBuilder(code,name)
+                        .withAdultLiteracyRate(literacyRate)
+                        .build();
+                countryDao.addCountry(country);
+            } else {
+                Country country = new Country.CountryBuilder(code,name)
+                        .build();
+                countryDao.addCountry(country);
+            }
+            System.out.printf("%s is added to World Public Data .%n",name);
+            worldCountries = countryDao.listAllCountry();
+        }
+    }
 }
